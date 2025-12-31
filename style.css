@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:wght@400;700;900&display=swap');
+
 * {
     margin: 0;
     padding: 0;
@@ -5,14 +7,106 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-    background-color: #000000;
-    color: #ffffff;
+    font-family: 'Playfair Display', 'Cinzel', serif;
+    background-color: #0a0a0a;
+    color: #f5f5f5;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow-x: hidden;
+    position: relative;
+    /* Film grain overlay - subtle */
+    background-image: 
+        repeating-linear-gradient(0deg, rgba(0,0,0,0.08) 0px, transparent 1px, transparent 3px, rgba(0,0,0,0.08) 4px),
+        repeating-linear-gradient(90deg, rgba(0,0,0,0.08) 0px, transparent 1px, transparent 3px, rgba(0,0,0,0.08) 4px);
+    background-size: 200% 200%, 200% 200%;
+    animation: filmGrain 0.2s infinite;
+}
+
+/* Film grain animation */
+@keyframes filmGrain {
+    0%, 100% {
+        background-position: 0% 0%, 0% 0%;
+    }
+    10% {
+        background-position: -5% -10%, 5% 5%;
+    }
+    20% {
+        background-position: -15% 5%, -5% 0%;
+    }
+    30% {
+        background-position: 7% -25%, 15% 25%;
+    }
+    40% {
+        background-position: -5% 25%, -25% 10%;
+    }
+    50% {
+        background-position: -15% 10%, 25% -5%;
+    }
+    60% {
+        background-position: 15% 0%, -10% 10%;
+    }
+    70% {
+        background-position: 0% 15%, 25% 35%;
+    }
+    80% {
+        background-position: 3% 35%, -20% -5%;
+    }
+    90% {
+        background-position: -10% 10%, 5% 0%;
+    }
+}
+
+/* Removed scanlines for cleaner look */
+
+/* Vignette effect */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
+    pointer-events: none;
+    z-index: 999;
+}
+
+/* Projector overlay */
+.projector-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, transparent 10%),
+        linear-gradient(to top, rgba(0, 0, 0, 0.1) 0%, transparent 10%);
+    pointer-events: none;
+    z-index: 998;
+    animation: projectorFlicker 4s ease-in-out infinite;
+}
+
+@keyframes projectorFlicker {
+    0%, 100% {
+        opacity: 1;
+    }
+    48% {
+        opacity: 1;
+    }
+    49% {
+        opacity: 0.95;
+    }
+    50% {
+        opacity: 0.98;
+    }
+    51% {
+        opacity: 0.95;
+    }
+    52% {
+        opacity: 1;
+    }
 }
 
 .container {
@@ -20,107 +114,1166 @@ body {
     padding: 2rem;
     max-width: 900px;
     width: 100%;
+    position: relative;
+    z-index: 10;
+    /* Clean background - no weird effects */
+    background: transparent;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    /* Ensure text is readable over background */
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9);
 }
 
-.stats {
-    position: absolute;
-    top: 2rem;
-    right: 2rem;
-    font-size: 0.9rem;
-    opacity: 0.7;
+/* Removed film corners - clean design */
+
+/* Small realistic camera recording indicator - top right corner */
+.camera-rec-indicator {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    align-items: center;
+    gap: 0.35rem;
+    z-index: 100;
+    font-family: 'Courier New', 'Monaco', monospace;
+    font-size: 0.65rem;
+    font-weight: bold;
+    letter-spacing: 0.08em;
 }
 
-.stats span {
-    display: block;
+.rec-dot {
+    width: 6px;
+    height: 6px;
+    background: #ff0000;
+    border-radius: 50%;
+    box-shadow: 
+        0 0 4px #ff0000,
+        0 0 6px rgba(255, 0, 0, 0.5);
+    animation: recPulse 1.2s ease-in-out infinite;
+    flex-shrink: 0;
+}
+
+@keyframes recPulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.rec-text {
+    color: #ff0000;
+    text-shadow: 
+        0 0 4px rgba(255, 0, 0, 0.6),
+        1px 1px 2px rgba(0, 0, 0, 0.8);
+    font-weight: bold;
+}
+
+/* Camera timecode display - bottom right corner */
+.camera-timecode {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 100;
+    font-family: 'Courier New', 'Monaco', monospace;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #ffffff;
+    letter-spacing: 0.1em;
+    text-shadow: 
+        0 0 6px rgba(255, 255, 255, 0.4),
+        1px 1px 3px rgba(0, 0, 0, 0.9);
+    font-variant-numeric: tabular-nums;
 }
 
 .roast-container {
     margin: 4rem 0;
     min-height: 300px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    position: relative;
+    padding: 3rem 2rem;
+    gap: 2rem;
+    z-index: 10;
+    /* Ensure text is above background */
+}
+
+/* Background film tape - like movie tape playing */
+.film-tape-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.film-tape-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.film-tape-image {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+    /* Old film color grading */
+    filter: 
+        sepia(40%) 
+        contrast(1.2) 
+        brightness(0.7)
+        saturate(1.4)
+        hue-rotate(-8deg)
+        blur(0.5px);
+    animation: filmTapeWiggle 0.25s infinite;
+    transform-origin: center;
+    z-index: 1;
+}
+
+.film-tape-image.active {
+    opacity: 0.25;
+    /* Subtle background, not too bright */
+}
+
+/* Film tape wiggle - continuous like old projector */
+@keyframes filmTapeWiggle {
+    0%, 100% {
+        transform: translate(-50%, -50%) translate(0, 0) rotate(0deg);
+    }
+    5% {
+        transform: translate(-50%, -50%) translate(0.4px, -0.3px) rotate(0.06deg);
+    }
+    10% {
+        transform: translate(-50%, -50%) translate(-0.3px, 0.4px) rotate(-0.04deg);
+    }
+    15% {
+        transform: translate(-50%, -50%) translate(0.3px, 0.3px) rotate(0.03deg);
+    }
+    20% {
+        transform: translate(-50%, -50%) translate(-0.4px, -0.2px) rotate(-0.05deg);
+    }
+    25% {
+        transform: translate(-50%, -50%) translate(-0.6px, 0.4px) rotate(0.12deg);
+    }
+    30% {
+        transform: translate(-50%, -50%) translate(0.2px, 0.4px) rotate(-0.03deg);
+    }
+    35% {
+        transform: translate(-50%, -50%) translate(-0.3px, -0.3px) rotate(0.04deg);
+    }
+    40% {
+        transform: translate(-50%, -50%) translate(0.4px, -0.3px) rotate(-0.06deg);
+    }
+    45% {
+        transform: translate(-50%, -50%) translate(0.3px, 0.2px) rotate(0.05deg);
+    }
+    50% {
+        transform: translate(-50%, -50%) translate(0.4px, -0.3px) rotate(-0.06deg);
+    }
+    55% {
+        transform: translate(-50%, -50%) translate(-0.2px, 0.3px) rotate(0.03deg);
+    }
+    60% {
+        transform: translate(-50%, -50%) translate(0.3px, -0.2px) rotate(-0.04deg);
+    }
+    65% {
+        transform: translate(-50%, -50%) translate(-0.4px, 0.3px) rotate(0.06deg);
+    }
+    70% {
+        transform: translate(-50%, -50%) translate(0.2px, 0.4px) rotate(-0.03deg);
+    }
+    75% {
+        transform: translate(-50%, -50%) translate(-0.3px, 0.5px) rotate(0.1deg);
+    }
+    80% {
+        transform: translate(-50%, -50%) translate(0.3px, -0.3px) rotate(-0.05deg);
+    }
+    85% {
+        transform: translate(-50%, -50%) translate(-0.2px, 0.2px) rotate(0.04deg);
+    }
+    90% {
+        transform: translate(-50%, -50%) translate(0.5px, -0.4px) rotate(-0.08deg);
+    }
+    95% {
+        transform: translate(-50%, -50%) translate(-0.3px, 0.3px) rotate(0.05deg);
+    }
+}
+
+/* Film wiggle animation - like old projector with jitter */
+@keyframes filmWiggle {
+    0%, 100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    5% {
+        transform: translate(0.3px, -0.2px) rotate(0.05deg);
+    }
+    10% {
+        transform: translate(-0.2px, 0.3px) rotate(-0.03deg);
+    }
+    15% {
+        transform: translate(0.2px, 0.2px) rotate(0.02deg);
+    }
+    20% {
+        transform: translate(-0.3px, -0.1px) rotate(-0.04deg);
+    }
+    25% {
+        transform: translate(-0.5px, 0.3px) rotate(0.1deg);
+    }
+    30% {
+        transform: translate(0.1px, 0.3px) rotate(-0.02deg);
+    }
+    35% {
+        transform: translate(-0.2px, -0.2px) rotate(0.03deg);
+    }
+    40% {
+        transform: translate(0.3px, -0.2px) rotate(-0.05deg);
+    }
+    45% {
+        transform: translate(0.2px, 0.1px) rotate(0.04deg);
+    }
+    50% {
+        transform: translate(0.3px, -0.2px) rotate(-0.05deg);
+    }
+    55% {
+        transform: translate(-0.1px, 0.2px) rotate(0.02deg);
+    }
+    60% {
+        transform: translate(0.2px, -0.1px) rotate(-0.03deg);
+    }
+    65% {
+        transform: translate(-0.3px, 0.2px) rotate(0.05deg);
+    }
+    70% {
+        transform: translate(0.1px, 0.3px) rotate(-0.02deg);
+    }
+    75% {
+        transform: translate(-0.2px, 0.4px) rotate(0.08deg);
+    }
+    80% {
+        transform: translate(0.2px, -0.2px) rotate(-0.04deg);
+    }
+    85% {
+        transform: translate(-0.1px, 0.1px) rotate(0.03deg);
+    }
+    90% {
+        transform: translate(0.3px, -0.3px) rotate(-0.06deg);
+    }
+    95% {
+        transform: translate(-0.2px, 0.2px) rotate(0.04deg);
+    }
+}
+
+/* Film reveal animation */
+@keyframes filmReveal {
+    0% {
+        opacity: 0;
+        transform: scale(0.9) translateY(20px);
+        filter: blur(10px) brightness(0.5);
+    }
+    50% {
+        filter: blur(5px) brightness(0.7);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: blur(0) brightness(1);
+    }
+}
+
+/* Film tape overlay - adds vintage look to background */
+.film-tape-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+    background: 
+        /* Strong vignette for background */
+        radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.6) 100%),
+        /* Film grain */
+        repeating-linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.15) 0px,
+            transparent 1px,
+            transparent 2px,
+            rgba(0, 0, 0, 0.15) 3px
+        ),
+        /* Color tint */
+        linear-gradient(
+            rgba(200, 200, 200, 0.15) 0%,
+            rgba(255, 255, 255, 0.08) 50%,
+            rgba(200, 200, 200, 0.15) 100%
+        );
+    mix-blend-mode: multiply;
+    animation: tapeOverlayFlicker 4s ease-in-out infinite;
+}
+
+@keyframes tapeOverlayFlicker {
+    0%, 100% {
+        opacity: 1;
+    }
+    48% {
+        opacity: 1;
+    }
+    49% {
+        opacity: 0.85;
+    }
+    50% {
+        opacity: 0.95;
+    }
+    51% {
+        opacity: 0.85;
+    }
+    52% {
+        opacity: 1;
+    }
+}
+
+/* Film tape scratches - moving scratches like old film */
+.film-tape-scratches {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    pointer-events: none;
+    background: 
+        linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.04) 15%,
+            transparent 16%,
+            transparent 84%,
+            rgba(255, 255, 255, 0.03) 85%,
+            transparent 86%
+        ),
+        linear-gradient(
+            0deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.03) 25%,
+            transparent 26%,
+            transparent 74%,
+            rgba(255, 255, 255, 0.04) 75%,
+            transparent 76%
+        );
+    animation: tapeScratchesMove 6s linear infinite;
+    mix-blend-mode: screen;
+    opacity: 0.6;
+}
+
+@keyframes tapeScratchesMove {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(100%);
+    }
+}
+
+/* Film tape grain overlay */
+.film-tape-grain {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 4;
+    pointer-events: none;
+    background-image: 
+        repeating-linear-gradient(0deg, rgba(0,0,0,0.08) 0px, transparent 1px, transparent 4px, rgba(0,0,0,0.08) 5px),
+        repeating-linear-gradient(90deg, rgba(0,0,0,0.08) 0px, transparent 1px, transparent 4px, rgba(0,0,0,0.08) 5px);
+    background-size: 200% 200%, 200% 200%;
+    animation: tapeGrainMove 0.2s infinite;
+    mix-blend-mode: overlay;
+    opacity: 0.3;
+}
+
+@keyframes tapeGrainMove {
+    0%, 100% {
+        background-position: 0% 0%, 0% 0%;
+    }
+    25% {
+        background-position: -3% -5%, 3% 3%;
+    }
+    50% {
+        background-position: -8% 3%, -3% 0%;
+    }
+    75% {
+        background-position: 4% -12%, 8% 12%;
+    }
+}
+
+/* Film reel spinning effect */
+.roast-container::before {
+    content: '';
+    position: absolute;
+    top: -2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 60px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: rgba(255, 255, 255, 0.8);
+    animation: reelSpin 3s linear infinite;
+    opacity: 0.5;
+}
+
+@keyframes reelSpin {
+    0% {
+        transform: translateX(-50%) rotate(0deg);
+    }
+    100% {
+        transform: translateX(-50%) rotate(360deg);
+    }
 }
 
 .roast {
-    font-size: clamp(1.5rem, 5vw, 3.5rem);
+    font-size: clamp(1.4rem, 4.8vw, 3.3rem);
     font-weight: 700;
-    line-height: 1.3;
-    letter-spacing: -0.02em;
+    line-height: 1.4;
+    letter-spacing: 0.02em;
     max-width: 800px;
     margin: 0 auto;
     opacity: 0;
-    animation: fadeIn 0.8s ease-in forwards;
+    color: #f5f5f5;
+    text-shadow: 
+        0 0 30px rgba(0, 0, 0, 1),
+        0 0 60px rgba(0, 0, 0, 0.8),
+        2px 2px 8px rgba(0, 0, 0, 1),
+        0 0 20px rgba(255, 255, 255, 0.15),
+        0 0 40px rgba(255, 255, 255, 0.25);
+    animation: cinematicReveal 1.2s ease-out forwards;
+    animation-delay: 0.5s;
+    position: relative;
+    font-family: 'Playfair Display', serif;
+    z-index: 11;
+    /* Strong shadow for readability over background */
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.anti-excuse {
+    font-size: clamp(1.4rem, 4.8vw, 3.3rem);
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: 0.02em;
+    max-width: 800px;
+    margin: 0 auto;
+    opacity: 0;
+    color: #f5f5f5;
+    min-height: 0;
+    text-shadow: 
+        0 0 30px rgba(0, 0, 0, 1),
+        0 0 60px rgba(0, 0, 0, 0.8),
+        2px 2px 8px rgba(0, 0, 0, 1),
+        0 0 20px rgba(255, 255, 255, 0.15),
+        0 0 40px rgba(255, 255, 255, 0.25);
+    animation: cinematicReveal 1.2s ease-out forwards;
+    animation-delay: 0.5s;
+    position: relative;
+    font-family: 'Playfair Display', serif;
+    z-index: 11;
+    /* Strong shadow for readability over background */
 }
 
-.roast.fade-out {
-    animation: fadeOut 0.4s ease-out forwards;
+
+.anti-excuse:empty {
+    display: none;
 }
 
-@keyframes fadeOut {
-    from {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    to {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-}
-
-.new-roast-btn {
-    background-color: transparent;
-    border: 2px solid #ffffff;
-    color: #ffffff;
-    font-size: 1.1rem;
-    font-weight: 600;
-    padding: 1rem 2.5rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+/* Film Reel Button - Creative Cinematic Alternative */
+.film-reel-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
     margin-top: 3rem;
+    cursor: pointer;
+    position: relative;
+    z-index: 11;
+    transition: transform 0.3s ease;
+    user-select: none;
 }
 
-.new-roast-btn:hover {
-    background-color: #ffffff;
-    color: #000000;
+.film-reel-btn:hover {
     transform: scale(1.05);
 }
 
-.new-roast-btn:active {
-    transform: scale(0.98);
+.film-reel-btn:active {
+    transform: scale(0.95);
+}
+
+.film-reel {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    border: 3px solid #e8e8e8;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, 
+        rgba(255, 255, 255, 0.2) 0%,
+        rgba(0, 0, 0, 0.8) 50%,
+        rgba(0, 0, 0, 0.95) 100%);
+    box-shadow: 
+        0 0 20px rgba(255, 255, 255, 0.3),
+        inset 0 0 30px rgba(0, 0, 0, 0.5),
+        0 0 40px rgba(0, 0, 0, 0.8);
+    animation: reelSpinBtn 3s linear infinite;
+    transition: all 0.3s ease;
+}
+
+.film-reel-btn:hover .film-reel {
+    animation: reelSpinBtn 0.8s linear infinite;
+    box-shadow: 
+        0 0 30px rgba(255, 255, 255, 0.5),
+        inset 0 0 30px rgba(0, 0, 0, 0.5),
+        0 0 50px rgba(0, 0, 0, 0.9);
+    border-color: #ffffff;
+}
+
+.film-reel-btn:active .film-reel {
+    animation: reelSpinFast 0.3s linear;
+}
+
+.film-reel-btn.loading .film-reel {
+    animation: reelSpinBtn 0.5s linear infinite;
+    border-color: #ffffff;
+    box-shadow: 
+        0 0 40px rgba(255, 255, 255, 0.7),
+        inset 0 0 30px rgba(0, 0, 0, 0.5),
+        0 0 60px rgba(0, 0, 0, 0.9);
+}
+
+.film-reel-btn.loading .reel-label {
+    color: #ffffff;
+    animation: loadingPulse 1s ease-in-out infinite;
+}
+
+@keyframes reelSpinBtn {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes reelSpinFast {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(180deg);
+    }
+}
+
+@keyframes loadingPulse {
+    0%, 100% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+.reel-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    background: radial-gradient(circle, 
+        rgba(255, 255, 255, 0.25) 0%,
+        rgba(255, 255, 255, 0.1) 40%,
+        transparent 70%);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    box-shadow: 
+        inset 0 0 8px rgba(255, 255, 255, 0.15),
+        0 0 10px rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(2px);
+    opacity: 0.7;
+}
+
+.reel-hole {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #0a0a0a;
+    border: 1px solid #e8e8e8;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform-origin: 0 0;
+}
+
+.reel-hole-1 {
+    transform: translate(-50%, -50%) translate(0, -30px);
+}
+
+.reel-hole-2 {
+    transform: translate(-50%, -50%) translate(26px, -15px) rotate(60deg);
+}
+
+.reel-hole-3 {
+    transform: translate(-50%, -50%) translate(26px, 15px) rotate(120deg);
+}
+
+.reel-hole-4 {
+    transform: translate(-50%, -50%) translate(0, 30px) rotate(180deg);
+}
+
+.reel-hole-5 {
+    transform: translate(-50%, -50%) translate(-26px, 15px) rotate(240deg);
+}
+
+.reel-hole-6 {
+    transform: translate(-50%, -50%) translate(-26px, -15px) rotate(300deg);
+}
+
+.film-strip {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 60px;
+    display: flex;
+    gap: 2px;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.strip-frame {
+    flex: 1;
+    background: linear-gradient(to bottom,
+        rgba(255, 255, 255, 0.08) 0%,
+        rgba(255, 255, 255, 0.04) 50%,
+        rgba(255, 255, 255, 0.08) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 2px;
+    animation: stripMove 2s ease-in-out infinite;
+}
+
+.strip-frame:nth-child(2) {
+    animation-delay: 0.3s;
+}
+
+.strip-frame:nth-child(3) {
+    animation-delay: 0.6s;
+}
+
+@keyframes stripMove {
+    0%, 100% {
+        opacity: 0.3;
+        transform: translateY(0);
+    }
+    50% {
+        opacity: 0.6;
+        transform: translateY(-5px);
+    }
+}
+
+.reel-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.9rem;
+    color: #e8e8e8;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255, 0.4),
+        2px 2px 4px rgba(0, 0, 0, 0.8);
+    margin-top: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.film-reel-btn:hover .reel-label {
+    color: #ffffff;
+    text-shadow: 
+        0 0 15px rgba(255, 255, 255, 0.5),
+        2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* Cinematic reveal animation */
+@keyframes cinematicReveal {
+    0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+        filter: blur(10px);
+    }
+    50% {
+        opacity: 0.5;
+        filter: blur(5px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+}
+
+/* Film fade out */
+.roast.fade-out,
+.anti-excuse.fade-out {
+    animation: cinematicFadeOut 0.6s ease-in forwards;
+}
+
+@keyframes cinematicFadeOut {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+    50% {
+        opacity: 0.3;
+        filter: blur(5px);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+        filter: blur(10px);
+    }
+}
+
+/* Subtle film jitter */
+@keyframes filmJitter {
+    0%, 100% {
+        transform: translate(0, 0);
+    }
+    25% {
+        transform: translate(-0.5px, 0.5px);
+    }
+    50% {
+        transform: translate(0.5px, -0.5px);
+    }
+    75% {
+        transform: translate(-0.3px, -0.3px);
+    }
+}
+
+.roast,
+.anti-excuse {
+    animation: cinematicReveal 1.2s ease-out forwards, filmJitter 0.3s infinite;
+    animation-play-state: running, paused;
+}
+
+.roast.playing,
+.anti-excuse.playing {
+    animation-play-state: running, running;
+}
+
+
+
+/* Film projector light beam effect */
+@keyframes projectorBeam {
+    0%, 100% {
+        opacity: 0.3;
+        transform: translateY(0) scaleY(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: translateY(-2px) scaleY(1.02);
+    }
+}
+
+.roast-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(to bottom,
+        rgba(255, 255, 255, 0.3) 0%,
+        rgba(255, 255, 255, 0.15) 50%,
+        transparent 100%);
+    animation: projectorBeam 2s ease-in-out infinite;
+    pointer-events: none;
+}
+
+/* Color shift effect (vintage film) */
+@keyframes colorShift {
+    0%, 100% {
+        filter: hue-rotate(0deg) contrast(1) saturate(1);
+    }
+    25% {
+        filter: hue-rotate(2deg) contrast(1.02) saturate(1.05);
+    }
+    50% {
+        filter: hue-rotate(-1deg) contrast(0.98) saturate(0.95);
+    }
+    75% {
+        filter: hue-rotate(1deg) contrast(1.01) saturate(1.02);
+    }
+}
+
+body {
+    animation: filmGrain 0.1s infinite, colorShift 8s ease-in-out infinite;
+}
+
+/* Scrapbook decorative elements */
+.decorative-element {
+    position: absolute;
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0.7;
+    mix-blend-mode: screen;
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.4));
+    will-change: transform, opacity;
+    transition: opacity 0.3s ease;
+}
+
+/* Highlighter lines */
+.decorative-highlighter {
+    height: 8px;
+    background: linear-gradient(90deg, 
+        transparent 0%,
+        rgba(255, 255, 0, 0.5) 20%,
+        rgba(255, 255, 0, 0.7) 50%,
+        rgba(255, 255, 0, 0.5) 80%,
+        transparent 100%);
+    border-radius: 4px;
+    transform-origin: center;
+    box-shadow: 0 0 8px rgba(255, 255, 0, 0.3);
+}
+
+/* Circles */
+.decorative-circle {
+    border: 3px solid;
+    border-radius: 50%;
+    transform-origin: center;
+}
+
+.decorative-circle.yellow {
+    border-color: rgba(255, 255, 0, 0.6);
+    box-shadow: 0 0 8px rgba(255, 255, 0, 0.4);
+}
+
+.decorative-circle.pink {
+    border-color: rgba(255, 192, 203, 0.6);
+    box-shadow: 0 0 8px rgba(255, 192, 203, 0.4);
+}
+
+.decorative-circle.blue {
+    border-color: rgba(173, 216, 230, 0.6);
+    box-shadow: 0 0 8px rgba(173, 216, 230, 0.4);
+}
+
+.decorative-circle.green {
+    border-color: rgba(144, 238, 144, 0.6);
+    box-shadow: 0 0 8px rgba(144, 238, 144, 0.4);
+}
+
+/* Lines */
+.decorative-line {
+    background: linear-gradient(90deg, 
+        transparent 0%,
+        rgba(255, 255, 255, 0.5) 30%,
+        rgba(255, 255, 255, 0.7) 50%,
+        rgba(255, 255, 255, 0.5) 70%,
+        transparent 100%);
+    transform-origin: center;
+    height: 2px;
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.4);
+}
+
+/* Wavy lines */
+.decorative-wave {
+    height: 2px;
+    background: linear-gradient(90deg, 
+        transparent 0%,
+        rgba(255, 182, 193, 0.5) 25%,
+        rgba(255, 255, 0, 0.5) 50%,
+        rgba(255, 182, 193, 0.5) 75%,
+        transparent 100%);
+    border-radius: 2px;
+    transform-origin: center;
+}
+
+/* Dotted circles */
+.decorative-dots {
+    border: 2px dashed;
+    border-radius: 50%;
+    transform-origin: center;
+}
+
+.decorative-dots.yellow {
+    border-color: rgba(255, 255, 0, 0.5);
+    box-shadow: 0 0 6px rgba(255, 255, 0, 0.3);
+}
+
+.decorative-dots.pink {
+    border-color: rgba(255, 192, 203, 0.5);
+    box-shadow: 0 0 6px rgba(255, 192, 203, 0.3);
+}
+
+.decorative-dots.blue {
+    border-color: rgba(173, 216, 230, 0.5);
+    box-shadow: 0 0 6px rgba(173, 216, 230, 0.3);
+}
+
+.decorative-dots.green {
+    border-color: rgba(144, 238, 144, 0.5);
+    box-shadow: 0 0 6px rgba(144, 238, 144, 0.3);
+}
+
+/* Alive, moving animations - elements float and wander */
+@keyframes floatOrbit1 {
+    0% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+    }
+    25% {
+        transform: translate(30px, -20px) rotate(90deg) scale(1.1);
+    }
+    50% {
+        transform: translate(-20px, -40px) rotate(180deg) scale(0.9);
+    }
+    75% {
+        transform: translate(-30px, 20px) rotate(270deg) scale(1.15);
+    }
+    100% {
+        transform: translate(0, 0) rotate(360deg) scale(1);
+    }
+}
+
+@keyframes floatOrbit2 {
+    0% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+    }
+    33% {
+        transform: translate(-35px, 25px) rotate(120deg) scale(1.2);
+    }
+    66% {
+        transform: translate(25px, 35px) rotate(240deg) scale(0.85);
+    }
+    100% {
+        transform: translate(0, 0) rotate(360deg) scale(1);
+    }
+}
+
+@keyframes floatOrbit3 {
+    0% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+    }
+    20% {
+        transform: translate(40px, 10px) rotate(72deg) scale(1.1);
+    }
+    40% {
+        transform: translate(20px, -35px) rotate(144deg) scale(0.95);
+    }
+    60% {
+        transform: translate(-25px, -30px) rotate(216deg) scale(1.15);
+    }
+    80% {
+        transform: translate(-40px, 15px) rotate(288deg) scale(0.9);
+    }
+    100% {
+        transform: translate(0, 0) rotate(360deg) scale(1);
+    }
+}
+
+@keyframes wanderPath1 {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    25% {
+        transform: translate(50px, -30px) rotate(45deg);
+    }
+    50% {
+        transform: translate(30px, -60px) rotate(90deg);
+    }
+    75% {
+        transform: translate(-40px, -40px) rotate(135deg);
+    }
+    100% {
+        transform: translate(0, 0) rotate(180deg);
+    }
+}
+
+@keyframes wanderPath2 {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    30% {
+        transform: translate(-45px, 35px) rotate(-60deg);
+    }
+    60% {
+        transform: translate(35px, 50px) rotate(-120deg);
+    }
+    100% {
+        transform: translate(0, 0) rotate(-180deg);
+    }
+}
+
+@keyframes spiralFloat {
+    0% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+    }
+    25% {
+        transform: translate(25px, -25px) rotate(90deg) scale(1.2);
+    }
+    50% {
+        transform: translate(0, -50px) rotate(180deg) scale(1);
+    }
+    75% {
+        transform: translate(-25px, -25px) rotate(270deg) scale(1.2);
+    }
+    100% {
+        transform: translate(0, 0) rotate(360deg) scale(1);
+    }
+}
+
+@keyframes figureEight {
+    0% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+    }
+    25% {
+        transform: translate(40px, -20px) rotate(90deg) scale(1.1);
+    }
+    50% {
+        transform: translate(0, -40px) rotate(180deg) scale(1);
+    }
+    75% {
+        transform: translate(-40px, -20px) rotate(270deg) scale(1.1);
+    }
+    100% {
+        transform: translate(0, 0) rotate(360deg) scale(1);
+    }
+}
+
+@keyframes pulseFloat {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.7;
+    }
+    25% {
+        transform: translate(20px, -30px) scale(1.15);
+        opacity: 0.9;
+    }
+    50% {
+        transform: translate(-15px, -20px) scale(0.9);
+        opacity: 0.6;
+    }
+    75% {
+        transform: translate(-25px, 25px) scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+/* Pulsing effect for some elements - more alive */
+@keyframes decorativePulse {
+    0%, 100% {
+        opacity: 0.5;
+        filter: brightness(1) drop-shadow(0 0 4px rgba(255, 255, 255, 0.4));
+    }
+    50% {
+        opacity: 0.9;
+        filter: brightness(1.3) drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
+    }
+}
+
+.decorative-pulse {
+    animation: decorativePulse 2s ease-in-out infinite;
+}
+
+/* Breathing effect */
+@keyframes breathe {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+/* Combine breathing with movement - use multiple animations */
+.decorative-breathing {
+    animation: breathe 3s ease-in-out infinite;
+}
+
+/* When both pulse and breathing are applied, combine animations */
+.decorative-pulse.decorative-breathing {
+    animation: decorativePulse 2s ease-in-out infinite, breathe 3s ease-in-out infinite;
 }
 
 @media (max-width: 768px) {
-    .stats {
-        position: static;
-        margin-bottom: 2rem;
-        text-align: center;
+    .camera-rec-indicator {
+        top: 0.75rem;
+        right: 0.75rem;
+        font-size: 0.6rem;
+    }
+    
+    .rec-dot {
+        width: 5px;
+        height: 5px;
+    }
+    
+    .camera-timecode {
+        bottom: 0.75rem;
+        right: 0.75rem;
+        font-size: 0.65rem;
     }
     
     .roast-container {
         margin: 2rem 0;
         min-height: 200px;
+        padding: 2rem 1rem;
+        gap: 1.5rem;
     }
     
-    .new-roast-btn {
-        padding: 0.9rem 2rem;
-        font-size: 1rem;
+    .film-tape-image {
+        animation: filmTapeWiggle 0.3s infinite;
+        filter: 
+            sepia(40%) 
+            contrast(1.2) 
+            brightness(0.65)
+            saturate(1.4)
+            hue-rotate(-8deg)
+            blur(1px);
     }
+    
+    .film-tape-image.active {
+        opacity: 0.2;
+    }
+    
+    .film-reel-btn {
+        margin-top: 2rem;
+    }
+    
+    .film-reel {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .reel-label {
+        font-size: 0.75rem;
+    }
+    
+    .decorative-highlighter {
+        height: 6px;
+    }
+    
+    .decorative-circle {
+        border-width: 2px;
+    }
+    
 }
 
