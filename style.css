@@ -1,0 +1,126 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+    background-color: #000000;
+    color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+}
+
+.container {
+    text-align: center;
+    padding: 2rem;
+    max-width: 900px;
+    width: 100%;
+}
+
+.stats {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    font-size: 0.9rem;
+    opacity: 0.7;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.stats span {
+    display: block;
+}
+
+.roast-container {
+    margin: 4rem 0;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.roast {
+    font-size: clamp(1.5rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    max-width: 800px;
+    margin: 0 auto;
+    opacity: 0;
+    animation: fadeIn 0.8s ease-in forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.roast.fade-out {
+    animation: fadeOut 0.4s ease-out forwards;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+.new-roast-btn {
+    background-color: transparent;
+    border: 2px solid #ffffff;
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 1rem 2.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 3rem;
+}
+
+.new-roast-btn:hover {
+    background-color: #ffffff;
+    color: #000000;
+    transform: scale(1.05);
+}
+
+.new-roast-btn:active {
+    transform: scale(0.98);
+}
+
+@media (max-width: 768px) {
+    .stats {
+        position: static;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+    
+    .roast-container {
+        margin: 2rem 0;
+        min-height: 200px;
+    }
+    
+    .new-roast-btn {
+        padding: 0.9rem 2rem;
+        font-size: 1rem;
+    }
+}
+

@@ -1,0 +1,12 @@
+{
+  "name": "no-excuses",
+  "version": "1.0.0",
+  "description": "A brutally honest reality-check web app",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "keywords": ["procrastination", "motivation", "reality-check"],
+  "author": "",
+  "license": "MIT"
+}
+
